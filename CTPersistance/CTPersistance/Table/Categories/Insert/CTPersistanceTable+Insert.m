@@ -84,7 +84,8 @@
             }
             if ([[queryCommand insertTable:[self.child tableName] withDataList:@[[record dictionaryRepresentationWithTable:self.child]]] executeWithError:error]) {
                 if ([[queryCommand rowsChanged] integerValue] > 0) {
-                    if (![record setPersistanceValue:[queryCommand lastInsertRowId] forKey:[self.child primaryKeyName]]) {
+                    NSString *primaryKeyName = [self.child primaryKeyName];
+                    if (![record valueForKey:primaryKeyName] && ![record setPersistanceValue:[queryCommand lastInsertRowId] forKey:primaryKeyName]) {
                         isSuccessed = NO;
                         if (error) {
                             *error = [NSError errorWithDomain:kCTPersistanceErrorDomain
